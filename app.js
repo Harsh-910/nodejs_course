@@ -26,24 +26,15 @@ const server = http.createServer((req, res) => {
     req.on("end", () => {
       const bodyParse = Buffer.concat(body).toString();
       console.log(bodyParse);
-      const message = bodyParse.split("=");
-      console.log('message',message)
-      fs.writeFileSync("message.txt", message);
+      const message = bodyParse.split("=")[1];
+      console.log("message", message);
+      fs.writeFile("message.txt", message, (err) => {
+        res.statusCode = 302;
+        res.setHeader("Location", "/");
+        return res.end();
+      });
     });
-    res.statusCode = 302;
-    res.setHeader("Location", "/");
-    return res.end();
   }
-
-  // res.setHeader('Content-Type','text/html')
-  // res.write('<html>')
-  // res.write('<head>My Node js</head>')
-  // res.write('<body><h1>Nods js</h1></body>')
-  // res.write('</html>')
-  // res.end()
-
-  // process.exit()
-  // Close the program
 });
 
 server.listen(9000);
