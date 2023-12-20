@@ -5,6 +5,8 @@ const path=require("path")
 const adminRoutes=require('./Routes/admin')
 const shopRoutes=require('./Routes/shop')
 
+const ErrorController=require("./Controller/error")
+
 const app=express();
 
 app.set('view engine','ejs')
@@ -17,8 +19,6 @@ app.use(express.static(path.join(__dirname,'public')))
 app.use('/admin',adminRoutes)
 app.use(shopRoutes)
 
-app.use((req,res,next)=>{
-    res.status(404).render('404',{pageTitle:'Page not found'})
-})
+app.use(ErrorController.getError)
 
 app.listen(9000)
