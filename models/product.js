@@ -1,4 +1,5 @@
-const product=[];
+const fs=require('fs')
+const path =require('path')
 
 module.exports = class Product{
     constructor(t){
@@ -6,10 +7,30 @@ module.exports = class Product{
     }
 
     save(){
-        product.push(this)
+        const p=path.join(path.dirname(process.mainModule.filename),'data','product.json')
+
+        fs.readFile(p,(err,fileContent)=>{
+            // console.log(fileContent)
+            let products=[];
+            if(!err){
+                products=JSON.parse(fileContent)
+            }
+            products.push(this)
+            fs.watchFile(p,JSON.stringify(products),(err)=>{
+                console.log(err)
+            })
+        })
     }
 
     static fetchAll(){
+        const p=path.join(path.dirname(process.mainModule.filename),'data','product.json')
+
+        fs.readFile(p,(err,fileContent)=>{
+            if(err){
+                return []
+            }
+            return JSON.parse(fileContent)
+        })
         return product;
     }
 }
