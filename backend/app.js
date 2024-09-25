@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 const feedRoutes = require("./routes/feed");
 
@@ -16,4 +17,13 @@ app.use((req, res, next) => {
 
 app.use("/feed", feedRoutes);
 
-app.listen(9000);
+mongoose
+  .connect(
+    "mongodb+srv://harsh:QartsBgC2RuaQfs3@cluster0.odidjca.mongodb.net/Rest-Crud"
+  )
+  .then((result) => {
+    app.listen(9000);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
